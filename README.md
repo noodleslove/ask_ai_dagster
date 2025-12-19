@@ -1,12 +1,25 @@
-# ask_ai_dagster — Dagster-orchestrated RAG knowledge base
+# Ask AI Dagster
 
-This project demonstrates how I design and build a **production-minded Retrieval-Augmented Generation (RAG) system** using **Dagster** as the orchestration layer.
+> A production-grade RAG knowledge base for Dagster documentation and community content, orchestrated with Dagster
 
-The system continuously builds a searchable knowledge base from:
-- **Dagster’s docs** (web scraping via sitemap)
-- **Dagster’s GitHub repo** (issues + discussions via GitHub GraphQL)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Dagster](https://img.shields.io/badge/orchestration-Dagster-654FF0)](https://dagster.io/)
+[![OpenAI](https://img.shields.io/badge/LLM-OpenAI-412991)](https://openai.com/)
+[![Pinecone](https://img.shields.io/badge/vector_store-Pinecone-000000)](https://www.pinecone.io/)
 
-It then answers questions by retrieving relevant chunks from **Pinecone** and generating a response with **OpenAI**.
+## Overview
+
+This project demonstrates a **production-minded Retrieval-Augmented Generation (RAG) system** using **Dagster** for orchestration. It continuously builds a searchable knowledge base from multiple sources and answers questions using semantic search and LLM generation.
+
+**Data sources:**
+- Dagster documentation (web scraping via sitemap)
+- Dagster GitHub repository (issues + discussions via GraphQL API)
+
+**Stack:**
+- **Orchestration**: Dagster (asset-based pipelines, partitioning, scheduling)
+- **Vector store**: Pinecone (semantic search with namespaces)
+- **Embeddings**: OpenAI `text-embedding-3-small`
+- **Generation**: OpenAI `gpt-4-turbo-preview`
 
 ## What this project showcases (design + engineering)
 
