@@ -36,7 +36,7 @@ flowchart LR
 
   subgraph Storage
     IO[DocumentIOManager\nJSON on disk]:::store
-    PC[Pinecone index\n"dagster-knowledge"]:::store
+    PC[Pinecone index\ndagster-knowledge]:::store
   end
 
   subgraph Models
