@@ -4,7 +4,10 @@ from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
 from langchain_core.documents import Document
 
-from ask_ai_dagster.defs.queries import GITHUB_DISCUSSIONS_QUERY, GITHUB_ISSUES_QUERY
+from ask_ai_dagster.defs.resources.queries import (
+    GITHUB_DISCUSSIONS_QUERY,
+    GITHUB_ISSUES_QUERY,
+)
 
 
 class GithubResource(ConfigurableResource):
@@ -27,9 +30,9 @@ class GithubResource(ConfigurableResource):
         )
 
     def get_issues(self, start_date: str, end_date: str) -> list[dict]:
-        issues_query = GITHUB_ISSUES_QUERY.replace("START_DATE", start_date).replace(
-            "END_DATE", end_date
-        )
+        issues_query = GITHUB_ISSUES_QUERY.replace(
+            "START_DATE", start_date
+        ).replace("END_DATE", end_date)
         return self._query(issues_query, "issues")
 
     def get_discussions(self, start_date: str, end_date: str) -> list[dict]:
@@ -49,7 +52,9 @@ class GithubResource(ConfigurableResource):
                 f"Fetching results from Github: {object_type} with cursor: {cursor}"
             )
             query = gql(
-                query.replace("CURSOR_PLACEHOLDER", f'"{cursor}"' if cursor else "null")
+                query.replace(
+                    "CURSOR_PLACEHOLDER", f'"{cursor}"' if cursor else "null"
+                )
             )
 
             result = client.execute(query)
@@ -97,7 +102,9 @@ class GithubResource(ConfigurableResource):
                     "created_at": item.get("createdAt"),
                     "closed_at": item.get("closedAt"),
                     "state_reason": item.get("stateReason"),
-                    "reaction_count": item.get("reactions", {}).get("totalCount", 0),
+                    "reaction_count": item.get("reactions", {}).get(
+                        "totalCount", 0
+                    ),
                 }
 
                 content_parts = [
@@ -152,7 +159,9 @@ class GithubResource(ConfigurableResource):
         logger = get_dagster_logger()
         documents = []
 
-        logger.info(f"Starting conversion of {len(items)} discussions to documents")
+        logger.info(
+            f"Starting conversion of {len(items)} discussions to documents"
+        )
         for item in items:
             try:
                 metadata = {
@@ -182,10 +191,12 @@ class GithubResource(ConfigurableResource):
                     for comment in item["comments"]["nodes"]:
                         if comment and "bodyText" in comment:
                             # Skip if this comment is the same as the accepted answer
-                            if not item.get("answer") or comment["bodyText"] != item[
-                                "answer"
-                            ].get("bodyText"):
-                                content_parts.append(f"Comment: {comment['bodyText']}")
+                            if not item.get("answer") or comment[
+                                "bodyText"
+                            ] != item["answer"].get("bodyText"):
+                                content_parts.append(
+                                    f"Comment: {comment['bodyText']}"
+                                )
 
                 if "labels" in item and "nodes" in item["labels"]:
                     labels = [label["name"] for label in item["labels"]["nodes"]]
@@ -201,7 +212,9 @@ class GithubResource(ConfigurableResource):
                     f"Processed discussion #{item.get('number')}: {item.get('title')} ({metadata['category']})"
                 )
             except Exception as e:
-                logger.error(f"Error processing discussion #{item.get('number')}: {e}")
+                logger.error(
+                    f"Error processing discussion #{item.get('number')}: {e}"
+                )
                 continue
 
         logger.info(
