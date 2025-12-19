@@ -17,7 +17,7 @@ weekly_partition = dg.WeeklyPartitionsDefinition(start_date=START_DATE)
 
 @dg.asset(
     group_name="ingestion",
-    kind={"github"},
+    kinds={"github"},
     partitions_def=weekly_partition,
     io_manager_key="document_io_manager",
     automation_condition=dg.AutomationCondition.on_cron("0 0 * * 1"),
@@ -55,7 +55,7 @@ def github_issues_raw(
 
 @dg.asset(
     group_name="ingestion",
-    kind={"github", "openai", "pinecone"},
+    kinds={"github", "openai", "pinecone"},
     partitions_def=weekly_partition,
     io_manager_key="document_io_manager",
     automation_condition=dg.AutomationCondition.any_deps_updated(),
