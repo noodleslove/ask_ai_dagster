@@ -54,7 +54,7 @@ def github_issues_raw(
 
 
 @dg.asset(
-    group_name="ingestion",
+    group_name="embeddings",
     kinds={"github", "openai", "pinecone"},
     partitions_def=weekly_partition,
     io_manager_key="document_io_manager",
