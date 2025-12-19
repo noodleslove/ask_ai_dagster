@@ -93,7 +93,9 @@ def github_issues_embeddings(
     github_issues_raw: list[Document],
 ) -> dg.MaterializeResult:
     pinecone.create_index("dagster-knowledge", dimension=1536)
-    index, namespace_kwargs = pinecone.get_index("dagster-knowledge")
+    index, namespace_kwargs = pinecone.get_index(
+        "dagster-knowledge", namespace="dagster-github"
+    )
 
     texts = [doc.page_content for doc in github_issues_raw]
     with openai.get_client(context) as client:
@@ -199,7 +201,9 @@ def github_discussions_embeddings(
     BATCH_SIZE = 100
 
     pinecone.create_index("dagster-knowledge", dimension=1536)
-    index, namespace_kwargs = pinecone.get_index("dagster-knowledge")
+    index, namespace_kwargs = pinecone.get_index(
+        "dagster-knowledge", namespace="dagster-github"
+    )
 
     texts = [doc.page_content for doc in github_discussions_raw]
     embeddings = []

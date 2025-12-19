@@ -45,6 +45,7 @@ def query(
     pinecone: PineconeResource,
     openai: OpenAIResource,
 ) -> dg.MaterializeResult:
+    logger = dg.get_dagster_logger()
     # start_query
     with openai.get_client(context) as client:
         question_embedding = (
@@ -57,7 +58,7 @@ def query(
         )
 
         results = []
-        for namespace in ["dagster-github", "dagster-docs"]:
+        for namespace in ["dagster-docs", "dagster-github"]:
             index_obj, namespace_kwargs = pinecone.get_index(
                 "dagster-knowledge", namespace=namespace
             )
@@ -73,7 +74,7 @@ def query(
         results = results[:3]
         # end_query
 
-        if not search_results.matches:
+        if len(results) == 0:
             return dg.MaterializeResult(
                 metadata={
                     "question": config.question,
@@ -85,7 +86,7 @@ def query(
         # Format context from search results
         contexts = []
         sources = []
-        for match in search_results.matches:
+        for match in results:
             contexts.append(match.metadata.get("text", ""))
             sources.append(
                 {
