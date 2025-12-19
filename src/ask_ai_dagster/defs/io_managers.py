@@ -1,4 +1,5 @@
 import json
+from logging import config
 import os
 from typing import Any
 import dagster as dg
@@ -37,3 +38,8 @@ class DocumentIOManager(dg.IOManager):
             Document(page_content=doc["page_content"], metadata=doc["metadata"])
             for doc in serialized_docs
         ]
+
+
+@dg.io_manager(config_schema={"base_dir": str})
+def document_io_manager(init_context) -> DocumentIOManager:
+    return DocumentIOManager(base_dir=init_context.resource_config["base_dir"])

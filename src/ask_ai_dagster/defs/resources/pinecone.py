@@ -1,3 +1,4 @@
+from typing import Optional
 import dagster as dg
 
 from pinecone import Pinecone
@@ -21,5 +22,8 @@ class PineconeResource(dg.ConfigurableResource):
                 spec={"serverless": {"cloud": "aws", "region": "us-east-1"}},
             )
 
-    def get_index(self, index_name: str):
-        return self._pinecone.Index(index_name)
+    def get_index(self, index_name: str, namespace: Optional[str] = None):
+        index = self._pinecone.Index(index_name)
+        if namespace:
+            return index, {"namespace": namespace}
+        return index, {}
