@@ -1,4 +1,3 @@
-from typing import Optional
 import dagster as dg
 
 from pinecone import Pinecone

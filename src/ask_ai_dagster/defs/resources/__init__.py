@@ -1,8 +1,8 @@
 import dagster as dg
 
-from ask_ai_dagster.defs.github import GithubResource
-from ask_ai_dagster.defs.pinecone import PineconeResource
-from ask_ai_dagster.defs.scraper import SitemapScraperResource
+from ask_ai_dagster.defs.resources.github import GithubResource
+from ask_ai_dagster.defs.resources.pinecone import PineconeResource
+from ask_ai_dagster.defs.resources.scraper import SitemapScraperResource
 
 
 @dg.definitions
