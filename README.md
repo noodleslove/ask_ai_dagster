@@ -41,7 +41,7 @@ flowchart LR
 
   subgraph Models
     E[OpenAI embeddings\ntext-embedding-3-small]
-    L[OpenAI chat model\n(gpt-4-turbo-preview)]
+    L[OpenAI chat model\ngpt-4-turbo-preview]
   end
 
   GH --> A1 --> IO
