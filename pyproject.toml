@@ -5,6 +5,7 @@ version = "0.1.0"
 dependencies = [
     "beautifulsoup4>=4.14.3",
     "dagster==1.12.6",
+    "dagster-openai>=0.28.6",
     "gql[all]>=3.5.3",
     "langchain>=1.2.0",
     "lxml>=6.0.2",
@@ -33,4 +34,5 @@ registry_modules = [
     "ask_ai_dagster.components.*",
 ]
 
-
+[tool.ruff]
+line-length = 82
